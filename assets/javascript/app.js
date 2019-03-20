@@ -1,20 +1,31 @@
 class TriviaData {
-  constructor (q, answers, correct) {
+  constructor (q, answers, correct, image=null) {
     this.question = q;
     this.answers = answers;
-    this.correct = correct;
+    this.correct = correct; // index of the correct answer
+    this.image = image;
   }
 }
 // ===== constants ==================================
 const data = [
-  new TriviaData("How many licks in a tootsie pop?",
-  [1, 2, 3, "The world may never know"], 3),
-  new TriviaData("What is my name?",
-  ["Joan", "Sally", "Mary", "Laura"], 1),
-  new TriviaData("What is my husband's name?",
-  ["Mark", "Tom", "David", "Bob"], 2),
+  new TriviaData("Which state had the first subway system?",
+  ["New York", "California", "Illinois", "Massachusetts"], 3),
+  new TriviaData("The fig newton is named after Newton, Massachusetts",
+  ["True", "False"], 0),
+  new TriviaData("The Grand Canyon is located in which state?",
+  ["Arizona", "New Mexico", "Utah", "Wyoming"], 0),
+  new TriviaData("Which state published the first daily newspaper?",
+  ["New York", "Maryland", "Pennsylvania", "New Hampshire"], 2),
+  new TriviaData("An Idaho law forbids a citizen to give another citizen a box of candy that weighs more than _____ pounds",
+  ["10", "20", "30", "40", "50"], 4),
+  new TriviaData("Florida is the only state that grows coffee.",
+  ["True", "False"], 1),
+  new TriviaData("Which state was the 50th state added to the union?",
+  ["Arizona", "Alaska", "Hawaii", "New Mexico"], 2),
+  new TriviaData("What state is this?",
+  ["Maine", "New Jersey", "Vermont", "New Hampshire"], 2, "./assets/images/NH.jpg"),
 ];
-const allowedTime = 15; // time in seconds
+const allowedTime = 30; // time in seconds
 
 // ===== Variables ===================================
 var currentAnswer = 0;
@@ -62,6 +73,9 @@ function resultsVisible() {
  * @param {*} q 
  */
 const displayQuestion = (q) => {
+  if (q.image != null) {
+    $("#quiz-image").attr("src", q.image);
+  }
   $("#question-text").html(q.question);
   currentAnswer = q.correct;
 

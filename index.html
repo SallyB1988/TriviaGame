@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./assets/css/reset.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Trivia Game</title>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-md-2 col-sm-12"></div>
+      <div class="col-md-8 col-sm-12">
+        <!-- Introduction Div -->
+        <div id="intro-box" >
+            <!-- <div id="intro-box" class="d-block m-auto" > -->
+          <h2>The Intro Object</h2>
+          <button id="intro-btn" type="button">Change Content</button>
+        </div>
+
+        <!-- Quiz div -->
+        <div id="quiz-box" class="d-block m-auto">
+            <!-- <div id="quiz-box" class="d-block m-auto"> -->
+          <div id="timer" class="text-center my-4 py-5"></div>
+          <div id="quiz-box" class="d-block m-auto" style="width: 18rem;">
+              <!-- <div id="quiz-box" class="d-block m-auto w-50" style="width: 18rem;"> -->
+
+                <!-- <div id="quiz-box" class="quiz-cardcard" style="width: 18rem;"> -->
+            <img
+              src="./assets/images/daisy.png"
+              class="card-img-top"
+              alt="daisy"
+            />
+            <div class="card-body">
+              <h5 id="question-text" class="card-title">Who is this?</h5>
+              <div id="answer-list" class="list-group"></div>
+            </div>
+          </div>
+          <div id="win-lose"></div>
+          <!-- <div id="win-lose" class="d-block m-auto"></div> -->
+        </div>
+
+        <!-- Results Div -->
+        <div id="results-box" >
+            <!-- <div id="results-box" class="d-block m-auto"> -->
+          <h2 id="results-title"></h2>
+          <h3 id="results-correct"></h3>
+          <h3 id="results-wrong"></h3>
+          <h3 id="results-score"></h3>
+          <!-- <button id="results-btn" type="button" >Restart?</button> -->
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="./assets/javascript/app.js"></script>
+  </body>
+</html>

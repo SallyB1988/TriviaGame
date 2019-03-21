@@ -45,3 +45,8 @@ p {
   width: 400px;
   text-align: center;
 }
+
+#instructions {
+  width: 80%;
+  margin: auto;
+}

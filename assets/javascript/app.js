@@ -23,7 +23,11 @@ const data = [
   new TriviaData("What state is this?",
   ["New York", "Pennsylvania", "Wisconsin", "Vermont"], 0, "./assets/images/NY.jpg"),
   new TriviaData("What state is this?",
-  ["Louisiana", "Arkansas", "Alabama", "Mississippi"], 2, "./assets/images/AL.jpg"),
+  ["Louisiana", "Arkansas", "Alabama", "Mississippi"], 2, "./assets/images/AL.png"),
+  new TriviaData("What state is this?",
+  ["North Carolina", "Alabama", "Georgia", "South Carolina"], 3, "./assets/images/SC.jpg"),
+  new TriviaData("What state is this?",
+  ["Colorado", "Utah", "New Mexico", "Missouri"], 0, "./assets/images/CO.png"),
   new TriviaData("An Idaho law forbids a citizen to give another citizen a box of candy that weighs more than _____ pounds",
   ["20", "30", "40", "50"], 3),
   new TriviaData("Florida is the only state that grows coffee.",
@@ -31,11 +35,12 @@ const data = [
   new TriviaData("Which state was the 50th state added to the union?",
   ["Arizona", "Alaska", "Hawaii", "New Mexico"], 2),
 ];
-const allowedTime =300; // time in seconds
+const allowedTime =30; // time in seconds
+const quizLength = 10; // number of questions to ask
 
 // ===== Variables ====================================
 var currentAnswer = 0;
-var currentIndex = 0;
+var questionsAsked = 0;
 var numCorrect = 0;
 var numWrong = 0;
 var isRunning = true;
@@ -54,6 +59,7 @@ const $winLose = $("#win-lose");        // correct/incorrect image display
 
 window.onload = function() {
   introVisible();
+  $("#instructions").html(`Answer ${quizLength} trivia questions about the United States in ${allowedTime} seconds!`);
   $("#intro-btn").click(startQuiz);
   $("#results-btn").click(restartQuiz);
 };
@@ -76,6 +82,12 @@ function resultsVisible() {
   $quiz.hide();
   $results.show();
 };
+
+const getRandomQuestion = () => {
+  var randIndex = Math.floor(Math.random() * data.length);
+  displayQuestion(data[randIndex]);
+  data.splice(randIndex,1);
+}
 
 /**
  * Take question data and populate the quiz card
@@ -110,7 +122,7 @@ const checkAnswer = (id) => {
     $winLose.html("<img class='win-lose' src='./assets/images/cross.png' alt='win'>");
     numWrong++;
   }
-  currentIndex++;
+  questionsAsked++;
 
   // Pop up a correct or incorrect message
   // The complicated function in the setTimeout is needed because the code
@@ -119,11 +131,11 @@ const checkAnswer = (id) => {
   $winLose.show();
   setTimeout( () => { 
     $winLose.hide()
-    if (currentIndex === data.length) {
+    if (questionsAsked === quizLength) {
       clearInterval(timerId);
       displayResults();
     } else {
-      displayQuestion(data[currentIndex]);
+      getRandomQuestion();
     }
   }, 1000);
 }
@@ -147,17 +159,17 @@ const runGame = () => {
 
 const displayResults = () => {
   resultsVisible();
-  var grade = (numCorrect * 100 /data.length).toFixed(2)
+  var grade = (numCorrect * 100 /questionsAsked).toFixed(0)
   $("#results-title").html("Game Over");
   $("#results-correct").html(`Correct: ${numCorrect}`);
   $("#results-wrong").html(`Missed:  ${numWrong}&nbsp`);
   $("#results-score").html(`Grade: ${grade}%`);
-
 }
 
 const restartQuiz = () => {
   timer=allowedTime;
-  currentIndex=0;
+  questionsAsked = 0;
+
   introVisible();
 }
 
@@ -166,6 +178,5 @@ const startQuiz = () => {
   // start time and run the game
   $timer.html(`<h3>Seconds remaining</h3><h2>${allowedTime}</h2>`);
   timerId = setInterval(runGame, 1000);
+  getRandomQuestion();
 }
-
-displayQuestion(data[0]);

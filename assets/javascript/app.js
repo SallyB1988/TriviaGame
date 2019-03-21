@@ -16,18 +16,24 @@ const data = [
   ["Arizona", "New Mexico", "Utah", "Wyoming"], 0),
   new TriviaData("Which state published the first daily newspaper?",
   ["New York", "Maryland", "Pennsylvania", "New Hampshire"], 2),
+  new TriviaData("What state is this?",
+  ["Maine", "New Jersey", "Vermont", "New Hampshire"], 3, "./assets/images/NH.jpg"),
+  new TriviaData("What state is this?",
+  ["Kentucky", "Tennesee", "Illinois", "North Carolina"], 1, "./assets/images/TN.jpg"),
+  new TriviaData("What state is this?",
+  ["New York", "Pennsylvania", "Wisconsin", "Vermont"], 0, "./assets/images/NY.jpg"),
+  new TriviaData("What state is this?",
+  ["Louisiana", "Arkansas", "Alabama", "Mississippi"], 2, "./assets/images/AL.jpg"),
   new TriviaData("An Idaho law forbids a citizen to give another citizen a box of candy that weighs more than _____ pounds",
-  ["10", "20", "30", "40", "50"], 4),
+  ["20", "30", "40", "50"], 3),
   new TriviaData("Florida is the only state that grows coffee.",
   ["True", "False"], 1),
   new TriviaData("Which state was the 50th state added to the union?",
   ["Arizona", "Alaska", "Hawaii", "New Mexico"], 2),
-  new TriviaData("What state is this?",
-  ["Maine", "New Jersey", "Vermont", "New Hampshire"], 2, "./assets/images/NH.jpg"),
 ];
-const allowedTime = 30; // time in seconds
+const allowedTime =300; // time in seconds
 
-// ===== Variables ===================================
+// ===== Variables ====================================
 var currentAnswer = 0;
 var currentIndex = 0;
 var numCorrect = 0;
@@ -37,35 +43,38 @@ var timer = allowedTime;
 var timerId = null;
 
 // ===== hooks =======================================
-const $answerList = $("#answer-list");
-const $timer = $("#timer");
-const $intro = $("#intro-box");
-const $quiz = $("#quiz-box");
-const $results = $("#results-box");
-const $winLose = $("#win-lose");
+const $intro = $("#intro-box");         // instructions
+const $quiz = $("#quiz-box");           // question region
+const $results = $("#results-box");     // final results of game
+
+const $timer = $("#timer");             // timer
+const $quizImage = $("#quiz-image");    // image for quiz questino
+const $answerList = $("#answer-list");  // answer choices
+const $winLose = $("#win-lose");        // correct/incorrect image display
 
 window.onload = function() {
+  introVisible();
   $("#intro-btn").click(startQuiz);
-  startQuiz();
+  $("#results-btn").click(restartQuiz);
 };
 
 // In case I want to allow game to restart with new quiz topic
-// function introVisible() {
-//   $intro.show();
-//   $quiz.hide()
-//   $results.hide()
-// };
+function introVisible() {
+  $intro.show();
+  $quiz.hide();
+  $results.hide()
+};
 
 function quizVisible() {
   $intro.hide();
-  $quiz.show()
-  $results.hide()
+  $quiz.show();
+  $results.hide();
 };
 
 function resultsVisible() {
   $intro.hide();
-  $quiz.hide()
-  $results.show()
+  $quiz.hide();
+  $results.show();
 };
 
 /**
@@ -74,7 +83,9 @@ function resultsVisible() {
  */
 const displayQuestion = (q) => {
   if (q.image != null) {
-    $("#quiz-image").attr("src", q.image);
+    $quizImage.attr("src", q.image);
+  } else {
+    $quizImage.attr("src", null);
   }
   $("#question-text").html(q.question);
   currentAnswer = q.correct;
@@ -93,10 +104,10 @@ const displayQuestion = (q) => {
 const checkAnswer = (id) => {
   const index = parseInt(id.slice(id.indexOf('-') + 1));
   if (index === currentAnswer) {
-    $winLose.html("<img class='win-lose' src='./assets/images/correct.jpg' alt='win'>");
+    $winLose.html("<img class='win-lose' src='./assets/images/checkmark.png' alt='win'>");
     numCorrect++;
   } else {
-    $winLose.html("<img class='win-lose' src='./assets/images/incorrect.jpg' alt='win'>");
+    $winLose.html("<img class='win-lose' src='./assets/images/cross.png' alt='win'>");
     numWrong++;
   }
   currentIndex++;
@@ -126,8 +137,8 @@ $("#answer-list").click((e) => {
 })
 
 const runGame = () => {
+  $timer.html(`<h3>Seconds remaining</h3><h2>${timer}</h2>`);
   timer--;
-  $timer.html(`<h2>${timer}</h2>`);
   if (timer === 0) {
     clearInterval(timerId);
     displayResults();
@@ -139,20 +150,21 @@ const displayResults = () => {
   var grade = (numCorrect * 100 /data.length).toFixed(2)
   $("#results-title").html("Game Over");
   $("#results-correct").html(`Correct: ${numCorrect}`);
-  $("#results-wrong").html(`Wrong:  ${numWrong}`);
+  $("#results-wrong").html(`Missed:  ${numWrong}&nbsp`);
   $("#results-score").html(`Grade: ${grade}%`);
 
 }
 
-// const endGame = () => {
-//   $("#status-box").html('<h1>Game Over</h1>');
-// }
+const restartQuiz = () => {
+  timer=allowedTime;
+  currentIndex=0;
+  introVisible();
+}
 
 const startQuiz = () => {
-  console.log('starting quiz')
   quizVisible();
   // start time and run the game
-  $timer.html(`<h2>${timer}</h2>`)
+  $timer.html(`<h3>Seconds remaining</h3><h2>${allowedTime}</h2>`);
   timerId = setInterval(runGame, 1000);
 }
 

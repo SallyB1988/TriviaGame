@@ -17,50 +17,59 @@
     <title>Trivia Game</title>
   </head>
   <body>
-    <div class="row">
-      <div class="col-md-2 col-sm-12"></div>
-      <div class="col-md-8 col-sm-12">
-        <!-- Introduction Div -->
-        <div id="intro-box" >
-            <!-- <div id="intro-box" class="d-block m-auto" > -->
-          <h2>The Intro Object</h2>
-          <button id="intro-btn" type="button">Change Content</button>
-        </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2 col-sm-12"></div>
+        <div id="main-region" class="col-md-8 col-sm-12 mt-5">
 
-        <!-- Quiz div -->
-        <div id="quiz-box" class="d-block m-auto">
-            <!-- <div id="quiz-box" class="d-block m-auto"> -->
-          <div id="timer" class="text-center my-4 py-5"></div>
-          <div id="quiz-box" class="d-block m-auto" style="width: 18rem;">
-              <!-- <div id="quiz-box" class="d-block m-auto w-50" style="width: 18rem;"> -->
-
-                <!-- <div id="quiz-box" class="quiz-cardcard" style="width: 18rem;"> -->
-            <img id="quiz-image"
-              src="./assets/images/daisy.png"
-              class="card-img-top"
-              alt="daisy"
-            />
-            <div class="card-body">
-              <h5 id="question-text" class="card-title">Who is this?</h5>
-              <div id="answer-list" class="list-group"></div>
-            </div>
+        <!-- Introduction Div     Outermost box cannot have any bootstrap stying or else the .hide() and .show() dont work! -->
+        <div id="intro-box">
+          <div class="d-block text-center visible">
+            <img class="pt-5" src="./assets/images/triviaQuiz.png">
+            <p class="py-2 font-weight-bold">Answer as many trivia questions about the United States as you can in 30 seconds!</p>
+            <button id="intro-btn" class="d-block mx-auto my-5 px-3 py-1 border-rounded" type="button">Start</button>
           </div>
-          <div id="win-lose"></div>
-          <!-- <div id="win-lose" class="d-block m-auto"></div> -->
         </div>
-
+          
+          <!-- Quiz div -->
+          <div id="quiz-box" >
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div  class="col-md-8">
+                <div id="timer" class="text-center my-2 py-2 text-uppercase">
+                    <h3>Seconds remaining</h3>
+                </div>
+              </div>
+            </div>
+            <div id="question" class="d-block m-auto" >
+              <div class="card-body text-uppercase d-block mx-auto">
+                  <img id="quiz-image"
+                  class="card-img-top pb-2"
+                  src=""
+                  />
+                  <h5 id="question-text" class="card-title text-uppercase"></h5>
+                  <div id="answer-list" class="list-group text-uppercase"></div>
+                </div>
+              </div>
+              <div id="win-lose"></div>
+        </div>
+        
         <!-- Results Div -->
         <div id="results-box" >
-            <!-- <div id="results-box" class="d-block m-auto"> -->
-          <h2 id="results-title"></h2>
-          <h3 id="results-correct"></h3>
-          <h3 id="results-wrong"></h3>
-          <h3 id="results-score"></h3>
-          <!-- <button id="results-btn" type="button" >Restart?</button> -->
+          <div class="text-uppercase">
+            <h2 id="results-title" class="text-center py-4"></h2>
+            <h3 id="results-correct" class="text-center my-2"></h3>
+            <h3 id="results-wrong" class="text-center my-2"></h3>
+            <hr>
+            <h3 id="results-score" class="text-center my-2"></h3>
+            <button id="results-btn" class="d-block mx-auto my-5 px-3 py-1 border-rounded" type="button" >Play Again?</button>
+          </div>
+          </div>
         </div>
       </div>
+      
     </div>
-
-    <script type="text/javascript" src="./assets/javascript/app.js"></script>
-  </body>
-</html>
+      <script type="text/javascript" src="./assets/javascript/app.js"></script>
+    </body>
+    </html>
+    

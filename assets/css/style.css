@@ -1,15 +1,47 @@
-.quiz-box {
+body {
+  background-image: url("../images/background2.jpg");
+  background-size: cover;
+}
+
+p {
+  font-size: 24px;
+}
+
+#main-region {
+  background: #01A9FF;
+  border-radius: 25px;
+  width: 80%;
+}
+
+#timer {
+  background: rgba(42, 99, 206, 0.938);
+  border-radius: 25px;
+}
+
+#quiz-box {
   position: relative;
+  height: 650px;
 }
 
 .win-lose {
-  height: 50%;
-  width: 50%;
+  height: 80%;
+  width: 80%;
 }
+
 
 #win-lose {
   position: absolute;
-  top: 25%;
-  left: 25%;
+  top: 40%;
+  left: 35%;
   z-index: 10;
+}
+
+#results-btn, #intro-btn {
+  color: white;
+  background: rgba(42, 99, 206, 0.938);
+}
+
+.card-body {
+  width: 400px;
+  text-align: center;
 }

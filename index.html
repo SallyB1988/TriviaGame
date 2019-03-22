@@ -13,7 +13,6 @@
     />
     <link rel="stylesheet" href="./assets/css/style.css" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Trivia Game</title>
   </head>
   <body>
@@ -21,15 +20,34 @@
       <div class="row">
         <div class="col-md-2 col-sm-12"></div>
         <div id="main-region" class="col-md-8 col-sm-12 mt-5">
-
-        <!-- Introduction Div     Outermost box cannot have any bootstrap stying or else the .hide() and .show() dont work! -->
-        <div id="intro-box">
-          <div class="d-block text-center visible">
-            <img class="pt-5 pb-5" src="./assets/images/triviaQuiz.png">
-              <p id="instructions" class="font-weight-bold"></p>
-            <button id="intro-btn" class="d-block mx-auto my-5 px-3 py-1 border-rounded" type="button">Start</button>
+          
+          <!-- Introduction Div     Outermost box cannot have any bootstrap stying or else the .hide() and .show() dont work! -->
+          <div id="intro-box">
+            <div class="d-block text-center visible">
+              <img class="pt-5 pb-5" src="./assets/images/triviaQuiz2.png">
+              <p id="instructions" class="font-weight-bold "></p>
+              <div class="row mt-4">
+                <div class="col-md-2"></div>
+                <div  class="col-md-4 text-uppercase font-weight-bold">
+                  <p id="subject-title">TOPIC</p>
+                  <p id="topic">state trivia</p>
+                </div>
+                <div class="col-md-4 dropdown">
+                  <button class="btn btn-secondary my-3 mt-4 dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select New Topic
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                    <button class="dropdown-item" type="button" value="state trivia">State Trivia</button>
+                    <button class="dropdown-item" type="button" value="science">Science</button>
+                    <button class="dropdown-item" type="button" value="board games">Board Games</button>
+                    <button class="dropdown-item" type="button" value="general knowledge">General Knowledge</button>
+                    <button class="dropdown-item" type="button" value="math">Math</button>
+                  </div>
+                </div>
+              </div>
+              <button id="intro-btn" class="d-block mx-auto my-5 px-3 py-1" type="button">Start</button>
+            </div>
           </div>
-        </div>
           
           <!-- Quiz div -->
           <div id="quiz-box" >
@@ -37,23 +55,23 @@
               <div class="col-md-2"></div>
               <div  class="col-md-8">
                 <div id="timer" class="text-center my-2 py-2 text-uppercase">
-                    <h3>Seconds remaining</h3>
+                  <h3>Seconds remaining</h3>
                 </div>
               </div>
             </div>
             <div id="question" class="d-block m-auto" >
               <div class="card-body text-uppercase d-block mx-auto">
-                  <img id="quiz-image"
-                  class="card-img-top pb-2"
-                  src=""
-                  />
-                  <h5 id="question-text" class="card-title text-uppercase"></h5>
-                  <div id="answer-list" class="list-group text-uppercase"></div>
-                </div>
+                <img id="quiz-image"
+                class="card-img-top pb-2"
+                src=""
+                />
+                <h5 id="question-text" class="card-title text-uppercase"></h5>
+                <div id="answer-list" class="list-group text-uppercase"></div>
               </div>
-              <div id="win-lose"></div>
-        </div>
-        
+            </div>
+            <div id="win-lose"></div>
+          </div>
+          
         <!-- Results Div -->
         <div id="results-box" >
           <div class="text-uppercase">
@@ -64,12 +82,15 @@
             <h3 id="results-score" class="text-center my-2"></h3>
             <button id="results-btn" class="d-block mx-auto my-5 px-3 py-1 border-rounded" type="button" >Play Again?</button>
           </div>
-          </div>
         </div>
       </div>
-      
     </div>
-      <script type="text/javascript" src="./assets/javascript/app.js"></script>
+    
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="./assets/javascript/app.js"></script>
     </body>
     </html>
     

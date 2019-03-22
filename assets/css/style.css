@@ -10,6 +10,7 @@ p {
 #main-region {
   background: #01A9FF;
   border-radius: 25px;
+  border: solid black 2.0px;
   width: 80%;
 }
 
@@ -38,7 +39,9 @@ p {
 
 #results-btn, #intro-btn {
   color: white;
-  background: rgba(42, 99, 206, 0.938);
+  background: rgba(45, 42, 206, 0.938);
+  border-radius: 8px;
+  border-color: grey;
 }
 
 .card-body {
@@ -49,4 +52,23 @@ p {
 #instructions {
   width: 80%;
   margin: auto;
+}
+
+#topic {
+  font-size: 24px;
+  /* background: rgba(42, 99, 206, 0.938); */
+  padding: 5px 0px;
+  border-radius: 8px;
+}
+
+#subject-title {
+  font-size: 20px;
+  margin: 0px;
+  color: black;
+  text-decoration: underline;
+}
+
+#dropdownMenu {
+  background: rgba(45, 42, 206, 0.938);
+  border-radius: 8px;
 }

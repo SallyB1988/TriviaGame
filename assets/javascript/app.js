@@ -7,7 +7,9 @@ class TriviaData {
   }
 }
 // ===== constants ==================================
-const data = [
+// stateData is the set of questions I came up with.  All other data sets
+// come from the Open Trivia API (https://opentdb.com/api_config.php)
+const stateData = [
   new TriviaData("Which state had the first subway system?",
   ["New York", "California", "Illinois", "Massachusetts"], 3),
   new TriviaData("The fig newton is named after Newton, Massachusetts",
@@ -35,7 +37,9 @@ const data = [
   new TriviaData("Which state was the 50th state added to the union?",
   ["Arizona", "Alaska", "Hawaii", "New Mexico"], 2),
 ];
-const allowedTime =30; // time in seconds
+
+var data = [];
+const allowedTime =120; // time in seconds
 const quizLength = 10; // number of questions to ask
 
 // ===== Variables ====================================
@@ -56,33 +60,103 @@ const $timer = $("#timer");             // timer
 const $quizImage = $("#quiz-image");    // image for quiz questino
 const $answerList = $("#answer-list");  // answer choices
 const $winLose = $("#win-lose");        // correct/incorrect image display
+const $topic = $("#topic");
 
 window.onload = function() {
+  data = stateData.slice(0);
   introVisible();
-  $("#instructions").html(`Answer ${quizLength} trivia questions about the United States in ${allowedTime} seconds!`);
+  $("#instructions").html(`Answer ${quizLength} trivia questions in ${(allowedTime/60).toFixed(1)} minutes!`);
   $("#intro-btn").click(startQuiz);
   $("#results-btn").click(restartQuiz);
 };
 
-// In case I want to allow game to restart with new quiz topic
+/**
+ * Makes Ajax call to trivia database API to gather information for questions.
+ * @param {*} t 
+ */
+const getAPIdata = (t) => {
+  var queryURL;
+
+  switch (t) {
+    case 'science':
+      queryURL = 'https://opentdb.com/api.php?amount=10&category=17&difficulty=easy';
+      break;
+      case 'general knowledge' :
+      queryURL = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy';
+      break;
+      case 'board games' :
+      queryURL = 'https://opentdb.com/api.php?amount=10&category=16&difficulty=easy';
+      break;
+      case 'math' :
+      queryURL = 'https://opentdb.com/api.php?amount=10&category=19&difficulty=easy';
+      break;
+    default:
+      alert('Error in API callerror');
+  }
+
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function(response) { 
+    data = [];
+    response.results.forEach((o) => {
+      const correct_index = Math.floor(Math.random() * (o.incorrect_answers.length + 1));
+      var answers = genAnswerArray(o.correct_answer, correct_index, o.incorrect_answers);
+      data.push(new TriviaData(o.question, answers, correct_index));
+    })
+  })
+}
+
+// Takes answer data gathered from the database and places it into an array. The correct
+// answer is placed at the index specified by ans_index
+const genAnswerArray = (ans_correct, ans_index, ans_incorrect) => {
+  var ans_array = [];
+  const arrlength = ans_incorrect.length + 1; // length of answer array that will be generated
+  for (var i=0; i< arrlength; i++) {
+    if (i === ans_index) {
+      ans_array.push(ans_correct);
+    } else {
+      ans_array.push(ans_incorrect.pop());
+    }
+  }
+  return ans_array;
+}
+
+// Make only introduction div visible
 function introVisible() {
   $intro.show();
   $quiz.hide();
   $results.hide()
 };
 
+// Make only the quiz div visible
 function quizVisible() {
   $intro.hide();
   $quiz.show();
   $results.hide();
 };
 
+// Make only the results div visible
 function resultsVisible() {
   $intro.hide();
   $quiz.hide();
   $results.show();
 };
 
+// When a topic is selected from the dropdown menu, fill the 'data' array
+$(".dropdown-item").click((e) => {
+  const subject = e.target.value;
+  $("#topic").html(subject);
+  if (subject === "state trivia" ) {
+    data = stateData.slice(0);
+  } else {
+    getAPIdata(e.target.value);
+  }
+})
+
+// Select a random question from the array so the questions don't always appear in the
+// same order. This is really only important for
+// the state trivia subject. The questions from the trivia API are already random.
 const getRandomQuestion = () => {
   var randIndex = Math.floor(Math.random() * data.length);
   displayQuestion(data[randIndex]);
@@ -90,7 +164,7 @@ const getRandomQuestion = () => {
 }
 
 /**
- * Take question data and populate the quiz card
+ * Populate the quiz card elements with the question data
  * @param {*} q 
  */
 const displayQuestion = (q) => {
@@ -110,7 +184,10 @@ const displayQuestion = (q) => {
 }
 
 /**
- * Given the id of the clicked answer, check to see if the answer is correct
+ * Given the id of the clicked answer:
+ *    check to see if the answer is correct
+ *    display the correct or incorrect image for 1 second
+ *    get the next question (or end the quiz)
  * @param {*} id 
  */
 const checkAnswer = (id) => {
@@ -125,9 +202,6 @@ const checkAnswer = (id) => {
   questionsAsked++;
 
   // Pop up a correct or incorrect message
-  // The complicated function in the setTimeout is needed because the code
-  // was displaying the final results without first showing whether the last
-  // question was answered correctly.
   $winLose.show();
   setTimeout( () => { 
     $winLose.hide()
@@ -140,12 +214,10 @@ const checkAnswer = (id) => {
   }, 1000);
 }
 
-// The answer-list listener is where the main loop of the code exists.
-// When a click occurs, the next question is displayed
+// When a click occurs, check the answer the next question is displayed
 $("#answer-list").click((e) => {
   var id = e.target.id;
   checkAnswer(id);
-
 })
 
 const runGame = () => {
@@ -169,7 +241,6 @@ const displayResults = () => {
 const restartQuiz = () => {
   timer=allowedTime;
   questionsAsked = 0;
-
   introVisible();
 }
 

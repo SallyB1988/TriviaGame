@@ -39,7 +39,7 @@ const stateData = [
 ];
 
 var data = [];
-const allowedTime =120; // time in seconds
+const allowedTime =90; // time in seconds
 const quizLength = 10; // number of questions to ask
 
 // ===== Variables ====================================
@@ -65,7 +65,7 @@ const $topic = $("#topic");
 window.onload = function() {
   data = stateData.slice(0);
   introVisible();
-  $("#instructions").html(`Answer ${quizLength} trivia questions in ${(allowedTime/60).toFixed(1)} minutes!`);
+  $("#instructions").html(`Answer ${quizLength} trivia questions in ${allowedTime} seconds!`);
   $("#intro-btn").click(startQuiz);
   $("#results-btn").click(restartQuiz);
 };
@@ -79,16 +79,16 @@ const getAPIdata = (t) => {
 
   switch (t) {
     case 'science':
-      queryURL = 'https://opentdb.com/api.php?amount=10&category=17&difficulty=easy';
+      queryURL = `https://opentdb.com/api.php?amount=${quizLength}&category=17&difficulty=easy`;
       break;
       case 'general knowledge' :
-      queryURL = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy';
+      queryURL = `https://opentdb.com/api.php?amount=${quizLength}&category=9&difficulty=easy`;
       break;
       case 'board games' :
-      queryURL = 'https://opentdb.com/api.php?amount=10&category=16&difficulty=easy';
+      queryURL = `https://opentdb.com/api.php?amount=${quizLength}&category=16&difficulty=easy`;
       break;
       case 'math' :
-      queryURL = 'https://opentdb.com/api.php?amount=10&category=19&difficulty=easy';
+      queryURL = `https://opentdb.com/api.php?amount=${quizLength}&category=19&difficulty=easy`;
       break;
     default:
       alert('Error in API callerror');
@@ -98,28 +98,41 @@ const getAPIdata = (t) => {
     url: queryURL,
     method: "GET",
   }).then(function(response) { 
+    var c_index;
+    var answers;
     data = [];
     response.results.forEach((o) => {
-      const correct_index = Math.floor(Math.random() * (o.incorrect_answers.length + 1));
-      var answers = genAnswerArray(o.correct_answer, correct_index, o.incorrect_answers);
-      data.push(new TriviaData(o.question, answers, correct_index));
+      [answers, c_index] = genAnswerArray(o.correct_answer, o.incorrect_answers);
+      data.push(new TriviaData(o.question, answers, c_index));
     })
   })
 }
 
+
+
+///****************SALLY HERE ************ */
 // Takes answer data gathered from the database and places it into an array. The correct
 // answer is placed at the index specified by ans_index
-const genAnswerArray = (ans_correct, ans_index, ans_incorrect) => {
+const genAnswerArray = (ans_correct, ans_incorrect) => {
   var ans_array = [];
+  var ans_index;
   const arrlength = ans_incorrect.length + 1; // length of answer array that will be generated
-  for (var i=0; i< arrlength; i++) {
-    if (i === ans_index) {
-      ans_array.push(ans_correct);
-    } else {
-      ans_array.push(ans_incorrect.pop());
+  if (arrlength === 2 && (ans_correct === "True" || ans_correct === "False")) {
+    ans_array = ["True", "False"];
+    ans_index = ans_array.indexOf(ans_correct);
+  } else {
+    ans_index = Math.floor(Math.random() * (ans_incorrect.length + 1));
+
+    for (var i=0; i< arrlength; i++) {
+      if (i === ans_index) {
+        ans_array.push(ans_correct);
+      } else {
+        ans_array.push(ans_incorrect.pop());
+      }
     }
   }
-  return ans_array;
+
+  return [ans_array, ans_index];
 }
 
 // Make only introduction div visible
@@ -241,6 +254,8 @@ const displayResults = () => {
 const restartQuiz = () => {
   timer=allowedTime;
   questionsAsked = 0;
+  numCorrect = 0;
+  numWrong = 0;
   introVisible();
 }
 
